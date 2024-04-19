@@ -1,71 +1,71 @@
 import BookCard from "./DummyComponent";
+import TailwindSpinner from "./TailwindSpinner";
 
-export default function BookCatalog() {
-  const books = [
-    // Array of book objects
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-      rating: 4.37,
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    {
-      title: "The Trials of Anne Mercer",
-      author: "Nic Stone",
-      imageUrl:
-        "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMTCZDpLeL4yYNP3jSRL9VbVj1dRN8q1gvnyqIU99VvEVfIvr8",
-    },
-    // ... other books
-  ];
+import { useState, useEffect } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import PaginationDemo from "./Pagination";
+
+const BookCatalog = () => {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      const apiUrl = `http://localhost:8083/bookcatalog/user-books?pageSize=20&pageNo=${page}`;
+      const token =
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUYXlsb3IiLCJpYXQiOjE3MTM1MzkxMjIsImV4cCI6MTcxMzU0MDkyMn0.CobdZ-gD7CmxIxmMHgRECJlXtHk0DPycK9AGIsH4KCw";
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setBooks(data);
+        setLoading(false);
+      } catch (e) {
+        setError(e.message);
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, [page]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
-      {books.map((book, index) => (
-        <BookCard key={index} book={book} />
-      ))}
+    <div>
+      <h1 className="mb-4 scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
+        Story Sage
+      </h1>
+      {loading && <TailwindSpinner />}
+      {error && (
+        <Alert variant="destructive">
+          <ExclamationTriangleIcon className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
+          {books.map((book) => (
+            <BookCard key={book.id} book={book} />
+          ))}
+        </div>
+      </ul>
+      <PaginationDemo page={page} setPage={setPage} />
     </div>
   );
-}
+};
+
+export default BookCatalog;
