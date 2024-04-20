@@ -5,6 +5,8 @@ import HeroPage from "./HeroPage";
 // import LoginForm from "./Login";
 import ProtectedRoute from "./ProtectedComponent";
 import BookCatalog from "./BookCatalog";
+import BookPage from "./BookPage";
+import { Sidebar } from "./Try";
 
 function App() {
   return (
@@ -12,13 +14,27 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<HeroPage />}></Route>
-          {/* <Route path="/register" element={<Register />}></Route>
-          <Route path="/login" element={<LoginForm />}></Route> */}
           <Route
-            path="/protected"
+            path="/books"
             element={
               <ProtectedRoute>
                 <BookCatalog />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dummy"
+            element={
+              <ProtectedRoute>
+                <Sidebar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/books/:id"
+            element={
+              <ProtectedRoute>
+                <BookPage />
               </ProtectedRoute>
             }
           />

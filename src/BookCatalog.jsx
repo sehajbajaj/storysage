@@ -1,4 +1,5 @@
-import BookCard from "./DummyComponent";
+import BookCard from "./BookCard";
+// import AlbumArtwork from "./Artwork";
 import TailwindSpinner from "./TailwindSpinner";
 
 import { useState, useEffect } from "react";
@@ -59,6 +60,7 @@ const BookCatalog = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
           {books.map((book) => (
             <BookCard key={"book_" + book.bookId} book={book} />
+            // <AlbumArtwork key={"book_" + book.bookId} book={book} />
           ))}
         </div>
       </ul>

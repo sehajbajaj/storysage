@@ -29,7 +29,7 @@ const BookCard = ({ book }) => {
     <Card className="flex flex-col bg-white rounded-lg border border-gray-200 shadow-md w-[400]overflow-hidden  hover:shadow-lg transition-shadow duration-300">
       <div className="flex-shrink-0">
         <img
-          className="rounded-t-lg w-full h-100 object-cover"
+          className="rounded-t-lg w-full h-100 object-cover transition-all hover:scale-105"
           src={book.coverImg}
           alt={book.title}
         />
