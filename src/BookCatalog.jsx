@@ -15,8 +15,7 @@ const BookCatalog = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       const apiUrl = `http://localhost:8083/bookcatalog/user-books?pageSize=20&pageNo=${page}`;
-      const token =
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUYXlsb3IiLCJpYXQiOjE3MTM1MzkxMjIsImV4cCI6MTcxMzU0MDkyMn0.CobdZ-gD7CmxIxmMHgRECJlXtHk0DPycK9AGIsH4KCw";
+      const token = localStorage.getItem("token");
 
       try {
         const response = await fetch(apiUrl, {
@@ -59,7 +58,7 @@ const BookCatalog = () => {
       <ul>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
           {books.map((book) => (
-            <BookCard key={book.id} book={book} />
+            <BookCard key={"book_" + book.bookId} book={book} />
           ))}
         </div>
       </ul>

@@ -38,7 +38,7 @@ const BookCard = ({ book }) => {
         <h5 className="text-md font-semibold">{book.title}</h5>
         <p className="text-xs text-gray-500">
           {book.authors.map((author, index, array) => (
-            <span key={author.id}>
+            <span key={"author_" + author.id}>
               <Link
                 to={`/authors/${author.id}`}
                 className="text-blue-500 hover:text-blue-600"
