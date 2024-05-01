@@ -1,22 +1,24 @@
 import BookCard from "./BookCard";
-// import AlbumArtwork from "./Artwork";
 import TailwindSpinner from "./TailwindSpinner";
 
 import { useState, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import PaginationDemo from "./Pagination";
+import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 
-const BookCatalog = () => {
+const GenrePage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
+  let { genreId } = useParams();
+  const [genreName, setGenreName] = useState("");
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const apiUrl = `http://localhost:8083/bookcatalog/user-books?pageSize=20&pageNo=${page}`;
+      const apiUrl = `http://localhost:8083/bookcatalog/genres/${genreId}?pageSize=20&pageNo=${page}`;
       const token = localStorage.getItem("token");
 
       try {
@@ -41,15 +43,39 @@ const BookCatalog = () => {
       }
     };
 
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(
+          `http://localhost:8083/bookcatalog/genres/details/${genreId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setGenreName(data.name);
+      } catch (error) {
+        console.error("Error fetching author details:", error);
+      }
+    };
+
+    fetchData();
     fetchBooks();
-  }, [page]);
+  }, [page, genreId]);
 
   return (
     <>
       <Navbar />
+
       <div>
         <h1 className="mb-4 scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
-          Story Sage
+          {genreName && <>{genreName}</>} Books
         </h1>
         {loading && <TailwindSpinner />}
         {error && (
@@ -63,7 +89,6 @@ const BookCatalog = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 p-4">
             {books.map((book) => (
               <BookCard key={"book_" + book.bookId} book={book} />
-              // <AlbumArtwork key={"book_" + book.bookId} book={book} />
             ))}
           </div>
         </ul>
@@ -73,4 +98,4 @@ const BookCatalog = () => {
   );
 };
 
-export default BookCatalog;
+export default GenrePage;

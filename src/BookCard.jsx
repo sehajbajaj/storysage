@@ -28,24 +28,30 @@ const BookCard = ({ book }) => {
   return (
     <Card className="flex flex-col bg-white rounded-lg border border-gray-200 shadow-md w-[400]overflow-hidden  hover:shadow-lg transition-shadow duration-300">
       <div className="flex-shrink-0">
-        <img
-          className="rounded-t-lg w-full h-100 object-cover transition-all hover:scale-105"
-          src={book.coverImg}
-          alt={book.title}
-        />
+        <Link to={`/book/${book.bookId}`}>
+          <div className="flex-shrink-0">
+            <img
+              className="rounded-t-lg w-full h-100 object-cover transition-all hover:scale-105"
+              src={book.coverImg}
+              alt={book.title}
+            />
+          </div>
+        </Link>
       </div>
       <div className="flex flex-col p-4 gap-2 flex-grow">
-        <h5 className="text-md font-semibold">{book.title}</h5>
+        <Link to={`/book/${book.bookId}`}>
+          <h5 className="text-md font-semibold">{book.title}</h5>
+        </Link>
         <p className="text-xs text-gray-500">
-          {book.authors.map((author, index, array) => (
-            <span key={"author_" + author.id}>
+          {book.authors.map((author, index) => (
+            <span key={author.id}>
               <Link
                 to={`/authors/${author.id}`}
-                className="text-blue-500 hover:text-blue-600"
+                className="text-blue-500 hover:text-blue-600 font-semibold"
               >
                 {author.name}
               </Link>
-              {index < array.length - 1 ? ", " : ""}
+              {index < book.authors.length - 1 && ", "}
             </span>
           ))}
         </p>
@@ -63,6 +69,7 @@ const BookCard = ({ book }) => {
 BookCard.propTypes = {
   book: PropTypes.shape({
     title: PropTypes.string.isRequired,
+    bookId: PropTypes.number.isRequired,
     authors: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,

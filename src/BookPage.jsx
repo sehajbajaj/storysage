@@ -1,7 +1,129 @@
+import { useState, useEffect } from "react";
+import Navbar from "./Navbar";
+import { FullStar, EmptyStar, FractionalStar } from "./Ratings.jsx";
+import { Link } from "react-router-dom";
+import TailwindSpinner from "./TailwindSpinner";
+import { useParams } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+
 const BookPage = () => {
+  const [book, setBook] = useState(null);
+  let { bookId } = useParams(); // State to store the book data
+
+  useEffect(() => {
+    const fetchBook = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(
+          `http://localhost:8083/bookcatalog/user-books/book/${bookId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch book data");
+        }
+        const data = await response.json();
+        setBook(data); // Set the fetched book data to state
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchBook();
+  }, [bookId]); // Re-fetch book data when the bookId parameter changes
+
+  const renderStars = (rating) => {
+    const totalStars = 5;
+    const fullStars = Math.floor(rating);
+    const fractionalStar = rating - fullStars; // This will be between 0 and 1
+    const emptyStars = totalStars - Math.ceil(rating);
+
+    return (
+      <>
+        {Array.from({ length: fullStars }).map((_, index) => (
+          <FullStar key={`full-${index}`} />
+        ))}
+        {fractionalStar > 0 && (
+          <FractionalStar percentage={fractionalStar * 100} key="fractional" />
+        )}
+        {Array.from({ length: emptyStars }).map((_, index) => (
+          <EmptyStar key={`empty-${index}`} />
+        ))}
+      </>
+    );
+  };
+
   return (
     <>
-      <></>
+      <Navbar />
+      <div className="flex justify-center items-center mt-5 h-full">
+        <div className="w-full md:w-full p-8 bg-white rounded-md shadow-md">
+          {book ? (
+            <div className="flex flex-col md:flex-row gap-8">
+              <img
+                className="h-auto w-full object-cover rounded-lg md:w-1/4"
+                src={book.coverImg}
+                alt={book.title}
+              />
+              <div className="md:w-2/3 flex flex-col justify-center items-start space-y-6">
+                <h1 className="text-4xl font-bold text-gray-800">
+                  {book.title}
+                </h1>
+                <div>
+                  <strong className="text-gray-700">By</strong>{" "}
+                  {book.authors.map((author, index) => (
+                    <span key={author.id}>
+                      <Link
+                        to={`/authors/${author.id}`}
+                        className="text-blue-500 hover:text-blue-600 font-semibold"
+                      >
+                        {author.name}
+                      </Link>
+                      {index < book.authors.length - 1 && ", "}
+                    </span>
+                  ))}
+                </div>
+                <div>
+                  <strong className="text-gray-700">Description:</strong> <br />
+                  <p className="text-base text-gray-700 leading-relaxed text-justify mt-4">
+                    {book.description}
+                  </p>
+                </div>
+                <div>
+                  <strong className="text-gray-700">Genres:</strong> <br />
+                  <div className="flex flex-wrap mt-4">
+                    {book.genres.map((genre) => (
+                      <Badge
+                        variant="secondary"
+                        key={genre.id}
+                        className="mr-2 mb-2"
+                      >
+                        {genre.name}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <strong className="mr-2 text-gray-700">Rating:</strong>{" "}
+                  <div className="flex items-center">
+                    {renderStars(book.rating)}
+                  </div>
+                </div>
+                <div>
+                  <strong className="text-gray-700">Pages:</strong>{" "}
+                  <span className="text-gray-700">{book.totalPages}</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <TailwindSpinner />
+          )}
+        </div>
+      </div>
     </>
   );
 };

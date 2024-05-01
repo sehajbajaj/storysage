@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import HeroPage from "./HeroPage";
-// import Register from "./Register";
-// import LoginForm from "./Login";
 import ProtectedRoute from "./ProtectedComponent";
 import BookCatalog from "./BookCatalog";
 import BookPage from "./BookPage";
-import { Sidebar } from "./Try";
+import AuthorPage from "./AuthorPage";
+import GenrePage from "./GenrePage";
 
 function App() {
   return (
@@ -23,18 +22,26 @@ function App() {
             }
           />
           <Route
-            path="/dummy"
+            path="/book/:bookId"
             element={
               <ProtectedRoute>
-                <Sidebar />
+                <BookPage />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/books/:id"
+            path="/authors/:authorId"
             element={
               <ProtectedRoute>
-                <BookPage />
+                <AuthorPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/genres/:genreId"
+            element={
+              <ProtectedRoute>
+                <GenrePage />
               </ProtectedRoute>
             }
           />

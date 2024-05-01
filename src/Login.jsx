@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+// import { useAuthorContext } from "./AuthorContext";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -22,6 +23,7 @@ const LoginForm = () => {
   const [token, setToken] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  // const { setIsLoading } = useAuthorContext();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,7 +57,7 @@ const LoginForm = () => {
           localStorage.setItem("token", data.message);
           console.log(token);
           setToken(data.message);
-          navigate("/protected");
+          navigate("/books");
         } else {
           setError(
             "Login failed. Please check your credentials and try again."
