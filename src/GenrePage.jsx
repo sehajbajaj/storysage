@@ -74,7 +74,7 @@ const GenrePage = () => {
       <Navbar />
 
       <div>
-        <h1 className="mb-4 scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
+        <h1 className="mt-8 mb-4 scroll-m-20 text-4xl font-bold tracking-tight">
           {genreName && <>{genreName}</>} Books
         </h1>
         {loading && <TailwindSpinner />}

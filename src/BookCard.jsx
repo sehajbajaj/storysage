@@ -56,8 +56,10 @@ const BookCard = ({ book }) => {
           ))}
         </p>
         <div className="flex mt-auto">
-          <Button size="xs" variant="light" className="mr-2">
-            Want to Read
+          <Button size="s" variant="outline" className="mr-3">
+            <Link to={`/books/post/${book.bookId}`} className="p-2">
+              Add to Catalog
+            </Link>
           </Button>
           <div className="flex items-center">{renderStars(book.rating)}</div>
         </div>

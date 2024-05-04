@@ -61,7 +61,7 @@ const BookPage = () => {
     <>
       <Navbar />
       <div className="flex justify-center items-center mt-5 h-full">
-        <div className="w-full md:w-full p-8 bg-white rounded-md shadow-md">
+        <div className="w-full md:w-full p-8 bg-white rounded-md shadow-md relative">
           {book ? (
             <div className="flex flex-col md:flex-row gap-8">
               <img
@@ -102,7 +102,12 @@ const BookPage = () => {
                         key={genre.id}
                         className="mr-2 mb-2"
                       >
-                        {genre.name}
+                        <Link
+                          to={`/genres/${genre.id}`}
+                          className="text-blue-500 hover:text-blue-600 font-semibold"
+                        >
+                          {genre.name}
+                        </Link>
                       </Badge>
                     ))}
                   </div>
@@ -114,9 +119,16 @@ const BookPage = () => {
                   </div>
                 </div>
                 <div>
-                  <strong className="text-gray-700">Pages:</strong>{" "}
-                  <span className="text-gray-700">{book.totalPages}</span>
+                  <strong className="text-gray-700">Series:</strong>{" "}
+                  <span className="text-gray-700">{book.series}</span>
                 </div>
+              </div>
+              <div className="absolute bottom-0 right-0 mb-4 mr-4">
+                <Link to={`/books/post/${book.bookId}`}>
+                  <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
+                    Add to Catalog
+                  </button>
+                </Link>
               </div>
             </div>
           ) : (
