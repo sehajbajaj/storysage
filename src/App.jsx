@@ -6,6 +6,7 @@ import BookCatalog from "./BookCatalog";
 import BookPage from "./BookPage";
 import AuthorPage from "./AuthorPage";
 import GenrePage from "./GenrePage";
+import UserPage from "./UserPage";
 import CatalogEntryPage from "./CatalogEntryPage";
 
 function App() {
@@ -51,6 +52,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <CatalogEntryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookcatalog"
+            element={
+              <ProtectedRoute>
+                <UserPage />
               </ProtectedRoute>
             }
           />

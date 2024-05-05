@@ -8,7 +8,7 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import PaginationDemo from "./Pagination";
 import Navbar from "./Navbar";
 
-const BookCatalog = () => {
+const UserPage = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +16,7 @@ const BookCatalog = () => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const apiUrl = `http://localhost:8083/bookcatalog/user-books?pageSize=20&pageNo=${page}`;
+      const apiUrl = `http://localhost:8083/bookcatalog/my-books?pageSize=20&pageNo=${page}`;
       const token = localStorage.getItem("token");
 
       try {
@@ -29,17 +29,11 @@ const BookCatalog = () => {
         });
 
         if (!response.ok) {
-          throw new Error(`Session Expired ${response.status}`);
-          
-        }
-
-        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
         setBooks(data);
-        setError(null);
         setLoading(false);
       } catch (e) {
         setError(e.message);
@@ -79,4 +73,4 @@ const BookCatalog = () => {
   );
 };
 
-export default BookCatalog;
+export default UserPage;

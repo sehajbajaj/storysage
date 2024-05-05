@@ -8,9 +8,9 @@ const CatalogEntryPage = () => {
   const [status, setStatus] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [pagesRead, setPagesRead] = useState(0);
-  const [stars, setStars] = useState("");
+  const [stars, setStars] = useState(0);
   const [error, setError] = useState(null);
-  let bookId = useParams();
+  const { bookId } = useParams();
 
   const handleStatusChange = (event) => {
     const selectedStatus = event.target.value;
@@ -55,7 +55,7 @@ const CatalogEntryPage = () => {
       setStatus("");
       setTotalPages(0);
       setPagesRead(0);
-      setStars("");
+      setStars(0);
       setError("");
 
       console.log("Book Added To Catalog");
