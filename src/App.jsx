@@ -8,6 +8,7 @@ import AuthorPage from "./AuthorPage";
 import GenrePage from "./GenrePage";
 import UserPage from "./UserPage";
 import CatalogEntryPage from "./CatalogEntryPage";
+import UpdateEntryPage from "./UpdateEntryPage";
 
 function App() {
   return (
@@ -56,7 +57,15 @@ function App() {
             }
           />
           <Route
-            path="/bookcatalog"
+            path="/books/update/:bookId"
+            element={
+              <ProtectedRoute>
+                <UpdateEntryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mybookcatalog"
             element={
               <ProtectedRoute>
                 <UserPage />

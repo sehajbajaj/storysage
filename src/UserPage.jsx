@@ -16,7 +16,7 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const apiUrl = `http://localhost:8083/bookcatalog/my-books?pageSize=20&pageNo=${page}`;
+      const apiUrl = `http://localhost:8083/bookcatalog/my-books/?pageSize=20&pageNo=${page}`;
       const token = localStorage.getItem("token");
 
       try {

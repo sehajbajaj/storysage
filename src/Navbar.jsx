@@ -3,6 +3,11 @@ import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    history.push("/");
+  };
+
   return (
     <header className="flex h-10 w-full shrink-0 items-center px-4 md:px-6">
       <Sheet>
@@ -13,76 +18,76 @@ export default function Navbar() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
-          <Link className="mr-6 hidden 2xl:flex" href="#">
+          <Link className="mr-6 hidden 2xl:flex" to="/books">
             <MountainIcon className="h-8 w-8" />
             <span className="sr-only">Story Sage</span>
           </Link>
           <div className="grid gap-4 py-8">
             <Link
               className="flex w-full items-center py-3 text-xl font-semibold"
-              href="/books/"
+              to="/books"
             >
               Home
             </Link>
             <Link
               className="flex w-full items-center py-3 text-xl font-semibold"
-              href="#"
+              to="/mybookcatalog"
             >
               My Books
             </Link>
             <Link
               className="flex w-full items-center py-3 text-xl font-semibold"
-              href="#"
+              // to="/search"
             >
               Search
             </Link>
             <Link
               className="flex w-full items-center py-3 text-xl font-semibold"
-              href="#"
+              // to="/recommendations"
             >
               Recommendations
             </Link>
             <Link
               className="flex w-full items-center py-3 text-xl font-semibold"
-              href="#"
+              onClick={handleLogOut}
             >
               Log Out
             </Link>
           </div>
         </SheetContent>
       </Sheet>
-      <Link className="mr-6 hidden 2xl:flex" href="#">
+      <Link className="mr-6 hidden 2xl:flex" to="/books">
         <MountainIcon className="h-8 w-8" />
         <span className="sr-only">Story Sage</span>
       </Link>
       <nav className="ml-auto hidden 2xl:flex gap-8">
         <Link
           className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-          href="/books"
+          to="/books"
         >
           Home
         </Link>
         <Link
           className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-          href="#"
+          to="/mybookcatalog"
         >
           My Books
         </Link>
         <Link
           className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-          href="#"
+          // to="/search"
         >
           Search
         </Link>
         <Link
           className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-          href="#"
+          // to="/recommendations"
         >
           Recommendations
         </Link>
         <Link
           className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-          href="#"
+          onClick={handleLogOut}
         >
           Log Out
         </Link>

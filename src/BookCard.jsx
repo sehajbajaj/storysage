@@ -1,23 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress"
+import { Progress } from "@/components/ui/progress";
 import PropTypes from "prop-types";
 import { FullStar, EmptyStar, FractionalStar } from "./Ratings.jsx";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
 const BookCard = ({ book }) => {
-  
-  const getProgressColorClass = (value) => {
-    if (value < 25) {
-      return "bg-red-500"; // Red color for progress less than 25%
-    } else if (value < 50) {
-      return "bg-yellow-500"; // Yellow color for progress between 25% and 50%
-    } else if (value < 75) {
-      return "bg-green-500"; // Green color for progress between 50% and 75%
-    } else {
-      return "bg-blue-500"; // Blue color for progress above 75%
-    }
-  };
-  
+  const [showActions, setShowActions] = useState(false);
+
   const renderStars = (rating) => {
     const totalStars = 5;
     const fullStars = Math.floor(rating);
@@ -25,7 +16,7 @@ const BookCard = ({ book }) => {
     const emptyStars = totalStars - Math.ceil(rating);
 
     return (
-      <>
+      <div className="flex items-center">
         {Array.from({ length: fullStars }).map((_, index) => (
           <FullStar key={`full-${index}`} />
         ))}
@@ -35,26 +26,43 @@ const BookCard = ({ book }) => {
         {Array.from({ length: emptyStars }).map((_, index) => (
           <EmptyStar key={`empty-${index}`} />
         ))}
-      </>
+      </div>
     );
   };
 
+  const toggleActions = () => {
+    setShowActions(!showActions);
+  };
+
+  const handleUpdateBook = () => {
+    // Logic for updating the book
+    console.log("Updating book:", book);
+  };
+
+  const handleDeleteBook = () => {
+    // Logic for deleting the book
+    console.log("Deleting book:", book);
+  };
+
+  const formatStatus = (status) => {
+    return status.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  };
   return (
-    <Card className="flex flex-col bg-white rounded-lg border border-gray-200 shadow-md w-[400]overflow-hidden  hover:shadow-lg transition-shadow duration-300 relative">
-      <div className="flex-shrink-0">
-        <Link to={`/book/${book.bookId}`}>
-          <div className="flex-shrink-0">
-            <img
-              className="rounded-t-lg w-full h-100 object-cover transition-all hover:scale-105"
-              src={book.coverImg}
-              alt={book.title}
-            />
-          </div>
-        </Link>
-      </div>
+    <Card
+      className="flex flex-col bg-white rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative"
+      onMouseEnter={toggleActions}
+      onMouseLeave={toggleActions}
+    >
+      <Link to={`/book/${book.bookId}`} className="flex-shrink-0">
+        <img
+          className="rounded-t-lg w-full h-100 object-cover transition-all hover:scale-105"
+          src={book.coverImg}
+          alt={book.title}
+        />
+      </Link>
       <div className="flex flex-col p-4 gap-2 flex-grow">
-        <Link to={`/book/${book.bookId}`}>
-          <h5 className="text-md font-semibold">{book.title}</h5>
+        <Link to={`/book/${book.bookId}`} className="text-md font-semibold">
+          <h5>{book.title}</h5>
         </Link>
         <p className="text-xs text-gray-500">
           {book.authors.map((author, index) => (
@@ -69,9 +77,9 @@ const BookCard = ({ book }) => {
             </span>
           ))}
         </p>
-        <div className="flex mt-auto">
-        {book.status !== null ? (
-            <p className="mr-3">{book.status}</p>
+        <div className="flex mt-auto items-center">
+          {book.status !== null ? (
+            <p className="mr-3">{formatStatus(book.status)}</p>
           ) : (
             <Button size="s" variant="outline" className="mr-3">
               <Link to={`/books/post/${book.bookId}`} className="p-2">
@@ -79,10 +87,20 @@ const BookCard = ({ book }) => {
               </Link>
             </Button>
           )}
-          <div className="flex items-center">{renderStars(book.rating)}</div>
+          {renderStars(book.rating)}
         </div>
       </div>
-      <Progress value={book.progress}/>
+      {showActions && book.status !== null && (
+        <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+          <Button onClick={handleUpdateBook}>
+            <Link to={`/books/update/${book.bookId}`} className="p-2">
+              Update Book
+            </Link>
+          </Button>
+          <Button onClick={handleDeleteBook}>Delete Book</Button>
+        </div>
+      )}
+      <Progress value={book.progress} />
     </Card>
   );
 };

@@ -5,11 +5,21 @@ import { Link } from "react-router-dom";
 import TailwindSpinner from "./TailwindSpinner";
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress"
+import { Progress } from "@/components/ui/progress";
+// import { useAuth } from "./useAuth";
+// import { useNavigate } from "react-router-dom";
 
 const BookPage = () => {
   const [book, setBook] = useState(null);
   let { bookId } = useParams(); // State to store the book data
+  // const isLoggedIn = useAuth();
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate("/");
+  //   }
+  // }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -25,19 +35,18 @@ const BookPage = () => {
           }
         );
 
-        console.log(response)
+        console.log(response);
         if (!response.ok) {
           throw new Error("Failed to fetch book data");
         }
         const data = await response.json();
         setBook(data); // Set the fetched book data to state
       } catch (error) {
-        console.error(response);
+        // console.error(response);
       }
     };
 
     fetchBook();
-    
   }, [bookId]); // Re-fetch book data when the bookId parameter changes
 
   const renderStars = (rating) => {
@@ -69,7 +78,7 @@ const BookPage = () => {
           {book ? (
             <div className="flex flex-col md:flex-row gap-8">
               <img
-                className="h-auto w-full object-cover rounded-lg md:w-1/4"
+                className="h-auto w-full object-cover rounded-lg md:w-1/3"
                 src={book.coverImg}
                 alt={book.title}
               />
@@ -126,18 +135,20 @@ const BookPage = () => {
                   <strong className="text-gray-700">Series:</strong>{" "}
                   <span className="text-gray-700">{book.series}</span>
                 </div>
-                {book.status !== null && (
-                  <div>
-                    <strong className="text-gray-700">Total Pages:</strong>{" "}
-                    <span className="text-gray-700">{book.totalPages}</span>
-                  </div>
-                )}
-                {book.status !== null && (
-                  <div>
-                    <strong className="text-gray-700">Pages Read:</strong>{" "}
-                    <span className="text-gray-700">{book.pagesRead}</span>
-                  </div>
-                )}
+                <div className="flex justify-between">
+                  {book.status !== null && (
+                    <div className="flex items-center">
+                      <strong className="text-gray-700">Total Pages: </strong>{" "}
+                      <span className="text-gray-700">{book.totalPages}</span>
+                    </div>
+                  )}
+                  {book.status !== null && (
+                    <div className="flex items-center ml-5">
+                      <strong className="text-gray-700">Pages Read: </strong>{" "}
+                      <span className="text-gray-700">{book.pagesRead}</span>
+                    </div>
+                  )}
+                </div>
                 {book.status !== null && (
                   <div>
                     <strong className="text-gray-700">Progress:</strong>{" "}
@@ -146,17 +157,19 @@ const BookPage = () => {
                 )}
               </div>
               <div className="absolute bottom-0 right-0 mb-4 mr-4">
-              {book.status === null && (
-                <Link to={`/books/post/${book.bookId}`}>
-                  <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
-                   Add to Catalog
-                </button>
-              </Link>
-             )}
+                {book.status === null && (
+                  <Link to={`/books/post/${book.bookId}`}>
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
+                      Add to Catalog
+                    </button>
+                  </Link>
+                )}
               </div>
-              <Progress value={book.progress} className="absolute bottom-0 left-0 right-0" />
+              <Progress
+                value={book.progress}
+                className="absolute bottom-0 left-0 right-0"
+              />
             </div>
-            
           ) : (
             <TailwindSpinner />
           )}

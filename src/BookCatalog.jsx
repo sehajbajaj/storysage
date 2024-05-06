@@ -7,12 +7,22 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import PaginationDemo from "./Pagination";
 import Navbar from "./Navbar";
+// import { useAuth } from "./useAuth";
+// import { useNavigate } from "react-router-dom";
 
 const BookCatalog = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
+  // const isLoggedIn = useAuth();
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate("/");
+  //   }
+  // }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -30,7 +40,6 @@ const BookCatalog = () => {
 
         if (!response.ok) {
           throw new Error(`Session Expired ${response.status}`);
-          
         }
 
         if (!response.ok) {
@@ -52,6 +61,7 @@ const BookCatalog = () => {
 
   return (
     <>
+      {" "}
       <Navbar />
       <div>
         <h1 className="mb-4 scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
