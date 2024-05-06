@@ -1,12 +1,10 @@
-import BookCard from "./BookCard";
-// import AlbumArtwork from "./Artwork";
-import TailwindSpinner from "./TailwindSpinner";
-
 import { useState, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import PaginationDemo from "./Pagination";
 import Navbar from "./Navbar";
+import BookCard from "./BookCard";
+import TailwindSpinner from "./TailwindSpinner";
 
 const UserPage = () => {
   const [books, setBooks] = useState([]);
@@ -16,7 +14,7 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const apiUrl = `http://localhost:8083/bookcatalog/my-books/?pageSize=20&pageNo=${page}`;
+      const apiUrl = `http://localhost:8083/bookcatalog/my-books?pageSize=20&pageNo=${page}`;
       const token = localStorage.getItem("token");
 
       try {
@@ -44,6 +42,12 @@ const UserPage = () => {
     fetchBooks();
   }, [page]);
 
+  const renderBooksByStatus = (status) => {
+    return books
+      .filter((book) => book.status === status)
+      .map((book) => <BookCard key={"book_" + book.bookId} book={book} />);
+  };
+
   return (
     <>
       <Navbar />
@@ -59,14 +63,20 @@ const UserPage = () => {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-        <ul>
+        <div>
+          <h2 className="text-xl font-bold mb-2">Completed Books</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8 p-4">
-            {books.map((book) => (
-              <BookCard key={"book_" + book.bookId} book={book} />
-              // <AlbumArtwork key={"book_" + book.bookId} book={book} />
-            ))}
+            {renderBooksByStatus("COMPLETED")}
           </div>
-        </ul>
+          <h2 className="text-xl font-bold mb-2">Currently Reading</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8 p-4">
+            {renderBooksByStatus("Currently Reading")}
+          </div>
+          <h2 className="text-xl font-bold mb-2">Want to Read</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8 p-4">
+            {renderBooksByStatus("Want to read")}
+          </div>
+        </div>
         <PaginationDemo page={page} setPage={setPage} />
       </div>
     </>

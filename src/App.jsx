@@ -9,6 +9,7 @@ import GenrePage from "./GenrePage";
 import UserPage from "./UserPage";
 import CatalogEntryPage from "./CatalogEntryPage";
 import UpdateEntryPage from "./UpdateEntryPage";
+import SearchPage from "./SearchPage";
 
 function App() {
   return (
@@ -69,6 +70,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <UserPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <ProtectedRoute>
+                <SearchPage />
               </ProtectedRoute>
             }
           />
